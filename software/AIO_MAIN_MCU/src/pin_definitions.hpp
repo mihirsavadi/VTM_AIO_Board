@@ -38,7 +38,7 @@
 #define BSPDFAULT_IN            2
 #define KILLSENSE_IN            4
 #define DATALOG_BUTTON_IN       5
-#define BUTTON_IN_NUETRAL       25
+#define BUTTON_IN_NEUTRAL       25
 #define BUTTON_IN_LAUNCHCONTROL 26
 #define SD_CARD_DETECT          27
 
