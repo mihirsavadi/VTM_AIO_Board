@@ -76,9 +76,12 @@ class aioMainMCU
         /* read all inputs (analog and digital) and update private fields*/
         void readInputs();
 
-        /* log all data in private fields into sd card in csv format
-            TODO: establish order of data in line
-            TODO: how to log errors
+        /* log all data in private fields into sd card in csv format.
+            See the .cpp for order in which data is printed per line.
+            Note all signals are raw 12bit adc values, which need to be converted
+            to amps in post processing.
+            This can be handled on the microcontroller in the future easily
+            but the scaling factors etc will have to be experimentally found.
         */
         void logAllInputs();
 

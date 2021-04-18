@@ -80,7 +80,48 @@ void aioMainMCU::readInputs()
 //TODO
 void aioMainMCU::logAllInputs()
 {
+    String dataLine;
 
+    if(dataFile)
+    {
+        dataLine.concat(String(this->current.shiftSolenoid) + ", ");
+        dataLine.concat(String(this->current.GSensor) + ", ");
+        dataLine.concat(String(this->current.syncSensor) + ", ");
+        dataLine.concat(String(this->current.EGT) + ", ");
+        dataLine.concat(String(this->current.injector) + ", ");
+        dataLine.concat(String(this->current.turboSolenoid) + ", ");
+        dataLine.concat(String(this->current.LTC) + ", ");
+        dataLine.concat(String(this->current.fuelPump) + ", ");
+        dataLine.concat(String(this->current.ignitionCoil) + ", ");
+        dataLine.concat(String(this->current.fan) + ", ");
+        dataLine.concat(String(this->current.auxiliaryStage) + ", ");
+        dataLine.concat(String(this->current.motec) + ", ");
+        dataLine.concat(String(this->current.acdcConverter) + ", ");
+        dataLine.concat(String(this->current.battery) + ", ");
+        dataLine.concat(String(this->current.servo) + ", ");
+
+        dataLine.concat(String(this->voltage.acdcConverter) + ", ");
+        dataLine.concat(String(this->voltage.battery) + ", ");
+
+        dataLine.concat(String(this->sigIns.gearSense) + ", ");
+        dataLine.concat(String(this->sigIns.throttleSignal) + ", ");
+        dataLine.concat(String(this->sigIns.brakeSignal) + ", ");
+        dataLine.concat(String(this->sigIns.bspdFault) + ", ");
+        dataLine.concat(String(this->sigIns.killsense) + ", ");
+        dataLine.concat(String(this->sigIns.dataLogButtonPressed) + ", ");
+        dataLine.concat(String(this->sigIns.neutralButtonPressed) + ", ");
+        dataLine.concat(String(this->sigIns.launchButtonPressed) + ", ");
+        dataLine.concat(String(this->sigIns.sdCardDetected));
+    }
+    else
+    {
+        this->errorPresent = true;
+        this->errorstring.concat("error opening datalog.csv" + ERDELIM);
+        
+        dataLine.concat("ERRORS PRESENT: " + this->errorstring);
+    }
+
+    this->dataFile.println(dataLine);
 }
 
 bool const aioMainMCU::getError(String &errorDescription)
