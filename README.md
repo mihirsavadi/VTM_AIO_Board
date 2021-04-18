@@ -4,6 +4,9 @@
 
 This repository contains all documentation and material related to [Virginia Tech's Formula SAE team - Virginia Tech Motorsports](https://vtmotorsports.weebly.com/) - All-in-One board for our 2021/2022 internal combustion vehicle.
 
+![alt text](./pictures/unpopulatedTop.jpg)
+![alt text](./pictures/unpopulatedBottom.jpg)
+
 The AIO board encapsulates several data acquisition features, as well as rules compliant power staging and power distribution, into a single PCB. Note that it is tightly integrated with our Brake-System-Plausibility device which can be found at the repository over [here](https://vtmotorsports.weebly.com/). 
 
 The repository is split into [hardware](./hardware) and [software](./software) subdirectories. The former contains schematics, BOM, etc. Note that I used Diptrace as my PCB design software of choice, and while all critical files for board fabrication/inventory management are available in standard formats (GERBER, pdf's, spreadsheets), the original Diptrace files are included as well. The rest of the team uses Altium, however I'm a stickler for Diptrace - its easy to port between the two. The software directory contains Platform-IO project files that run both the MAIN and DRS microcontrollers on the AIO board. Custom Hardware Abstraction Layers/API's were made in order to make it easy to work with the board's slew of features. Both subdirectories include folders containing all our old revisions, which can be safely ignored unless you are a VTM member or a general busy body.  
