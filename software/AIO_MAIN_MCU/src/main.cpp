@@ -2,23 +2,29 @@
 
 #include "aioMainMCU.hpp"
 
+#define includeSerialPrints false
+
 void setup() {
 
-  Serial.begin(9600);
+  #if includeSerialPrints == true
+    Serial.begin(9600);
+  #endif
 
   aioMainMCU mainMCU;
   
   while(1)
   {
-    String error;
-    if (mainMCU.getError(error))
-    {
-      Serial.println(error);
-    }
-    else
-    {
-      Serial.println("NO ERROR!");
-    }
+    #if includeSerialPrints == true
+      String error;
+      if (mainMCU.getError(error))
+      {
+        Serial.println(error);
+      }
+      else
+      {
+        Serial.println("NO ERROR!");
+      }
+    #endif
 
     mainMCU.readInputs();
     mainMCU.logAllInputs();
