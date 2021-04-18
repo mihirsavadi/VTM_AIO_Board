@@ -78,6 +78,17 @@ void aioMainMCU::readInputs()
 }
 
 //TODO
+String aioMainMCU::getGPSData()
+{
+    return String("dummy");
+}
+
+//TODO
+String aioMainMCU::getIMUData()
+{
+    return String("dummy");
+}
+
 void aioMainMCU::logAllInputs()
 {
     String dataLine;

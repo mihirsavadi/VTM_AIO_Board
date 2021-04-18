@@ -8,6 +8,7 @@
     to make programming in main.cpp clean, easy, and consistent.
 
     TODO: Incorporate GPS and IMU functionality
+    TODO: Implement UART comms with DRS MCU
 */
 #include <Arduino.h>
 
@@ -77,6 +78,16 @@ class aioMainMCU
 
         /* read all inputs (analog and digital) and update private fields*/
         void readInputs();
+
+        //TODO
+        /* Get all current GPS data and return string in format:
+            <TODO: figure out format>   */
+        String getGPSData();
+
+        //TODO
+        /* Get all current IMU data and return string in format:
+            <TODO: figure out format>   */
+        String getIMUData();
 
         /* log all data in private fields into sd card in csv format.
             See the .cpp for order in which data is printed per line.
