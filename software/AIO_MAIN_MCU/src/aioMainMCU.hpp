@@ -6,6 +6,8 @@
 
     Main class to abstract away all core functionalities and initializations
     to make programming in main.cpp clean, easy, and consistent.
+
+    TODO: Incorporate GPS and IMU functionality
 */
 #include <Arduino.h>
 
