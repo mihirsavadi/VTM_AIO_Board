@@ -1,9 +1,27 @@
+
+/* Mihir Savadi 18th April 2021 */
+
 #include <Arduino.h>
 
+#include "aioDRSMCU.hpp"
+
+#define includeSerialPrints false
+
 void setup() {
-  // put your setup code here, to run once:
+
+  #if includeSerialPrints == true
+    Serial.begin(9600);
+  #endif
+
+  aioDRSMCU drsMCU;
+  
+  while(1)
+  {
+    drsMCU.runDRSservo(true);
+    drsMCU.runBBservo();
+  }
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
+//dont use this. Put all looped code in the while(1) block in void setup for
+// tighter control of scope and to just keep code clean.
+void loop() {}
