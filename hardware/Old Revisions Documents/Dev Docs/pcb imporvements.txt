@@ -1,0 +1,71 @@
+**- brake biasing control input - use toggle switch instead. include appropriate pullup resisotrs etc. 
+	https://www.mouser.com/ProductDetail/NKK-Switches/M2026TXG13-GA?qs=sGAEpiMZZMtNT9UGfLL4eDJ7P1IhrNFSPZ%252BhqWZtG4I%3D
+
+**- breakout 5V from the DAQ to use as 5v supply in BSPD. 
+
+**- Add central ground pin for DAQ, so dont have to splice from cable to attach to system ground bus. 
+
+**- Bridge 3.3V outputs for all uC's in the DAQ, so can reduce steering wheel pins used by sharing a 3.3v pin.
+
+XX- Add 12V and ground supply pins on DAQ to feed to BSPD. Cos right now it has to splice from PDU motec 12V and ground. 
+
+XX- Add resistor for 2 wire wheel speed hall effect sensor for each of the 4 sensors. Also accomodate input, gnd, 
+	power pins for these wheel speed sensors into DAQ. Then directly output signal to motec. 
+
+**- BSPD fault pin - remove the feature where the bspd faults if the fault pin from the PDU goes high 
+	(which in its current form effectively disconnects the throttle pedal to the throttle body once any switch in the kill switch path breaks, and will only reset
+	if the car is power cycled (i.e. master switch turned off then on again). This is annoying for the driver as for example, if the cockpit emergency shutoff is 
+	reset they want the car to start back again). 
+	ADD A WIRE FOR SHUTTING DOWN ENGINE BY DRIVING FP AND IC ENABLE PINS LOW FROM PDU MCU. THis button goes on steering wheel.  
+
+- A lot of power stages the m150 can take over with. Specifically Clutch, Upshift, Downshift, BL moves, (DAQ is deleted entirely see previous point) can be gotten
+	rid of. SAVE SPACE BY GETTING RID OF THEM! Add another auxiliary power stage - so 2 aux power stages. 
+	- no more autoshifting board needed. Only thing is launch control button will tell drs to lower wing. 
+		MOVING TO M150
+			1. All 3 solenoids - cluch, upshift, downshift
+			2. Brake Light
+			3. get rid of shift sensors, they go directly to m150 from steering wheel. Nuetral shit also 
+				foes direclty to M150.
+		What stays/add
+			1. Fan (~5A)
+			2. Ignition Coil (~<1A)
+			3. Fuel Pump (6A max)ss
+			4. Lambda Sensor Assembly (1A)
+			5. Auxiliary Power Stage (in case of oil pump 5-10A)
+			6. Electrical lighter power stage 
+			7. Fuse protection for 12V to Motec.
+
+XX- two pins for 12V and Ground going to M150, after the breaker. 
+
+- bspd throttle pots share 5v and ground. Make this one pair of connections instead of individual for both throttle body pots. As a result use only once "breaker" switch 
+	instead of 2. 
+
+XX- power, gnd, and sense pins for 4 wheel speed sensors. Direct sensor signal outputs as well to send to MOTEC. 
+
+XX- use smaller freewheeling diodes. look at zener snubber, or resistors in series etc. 
+
+- ADD NEW SMALL VTM LOGO TO THE PCBS!!!!!
+
+**- CANBUS TX and RX 120ohm resistor need to add. Ditch the breakout board and add the canbus transceiver IC directly like on ultra dash. Double check all canbus stuff works fine.  
+	https://www.mouser.com/ProductDetail/Texas-Instruments/SN65HVD230QDR?qs=sGAEpiMZZMuo%252BmZx5g6tFAlDuGCVnolu
+		see ultra dash schematic for instructions
+
+XX - change mosfets to SiC through hole for easier maintance and workability. See how to deal with gate drivers.
+	https://www.mouser.com/ProductDetail/ON-Semiconductor/NVMTS0D4N04CLTXG?qs=sGAEpiMZZMshyDBzk1%2FWi%2FD7Em5shE8qOqCjnsayTN29tWtn9lOXPQ%3D%3D. Put 3-4 kickback
+		diodes in parallel with the mosfet drain and source, as well as across the starter motor load. Put 3-4 of these in parallel for the starter motor. 
+
+**- use breaker sockets vs directly soldering it. 
+	switch to these relays https://www.mouser.com/ProductDetail/E-T-A/1610-H2-15A?qs=sGAEpiMZZMuI1aKsGLfKZA5hO6AqP8zIZLe6%2F35hRR8%3D
+	use this socket https://www.mouser.com/ProductDetail/Keystone-Electronics/3557-15?qs=sGAEpiMZZMtRmoYvq3OwzJB6GGomDVGinZN5xv%2FtrhCP0sdDxDdf7w%3D%3D
+
+**- dont have big fat traces anymore, instead to and from each power stage have wire soldered underneath. Make sure hole is big enough for 16awg. see silicone wire. 
+
+XX - remove reverse voltage protection diodes. or maybe find a more packaging safeoption. https://www.mouser.com/Search/Refine?Keyword=V60DM60C use this diode better. 
+
+**- have battery and starter connections come from downside of board, and rest of connections from the right side of the board. 
+
+- Group steering wheel buttons to share common ground or whatever. 
+
+- Steering wheel potentiometer already accomodated. Relay passthrough signal to motec (accomodate a pin for this). 
+
+- starter motor takes around or just below 150A at peak, and around 60A continuous. 

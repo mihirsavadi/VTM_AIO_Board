@@ -1,0 +1,198 @@
+// Virginia Tech Honor Code Pledge:
+//
+// As a Hokie, I will conduct myself with honor and integrity at all times.
+// I will not lie, cheat, or steal, nor will I accept the actions of those
+// who do.
+// -- Lucas Nunn (nlucas)
+import sofia.micro.*;
+
+// -------------------------------------------------------------------------
+/**
+ *  Tests the methods in the particle class
+ *
+ *  @author Lucas Nunn (nlucas)
+ *  @version (2019.04.01)
+ */
+public class ParticleTest extends TestCase
+{
+    //~ Fields ................................................................
+
+    private Particle vaccines;
+    private Particle cause;
+    private Particle autism;
+    private Particle doaflip;
+    private ParticleWorld faggot;
+
+    //~ Constructor ...........................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Creates a new ParticleTest test object.
+     */
+    public ParticleTest()
+    {
+        // The constructor is usually empty in unit tests, since it runs
+        // once for the whole class, not once for each test method.
+        // Per-test initialization should be placed in setUp() instead.
+    }
+
+
+    //~ Methods ...............................................................
+
+    // ----------------------------------------------------------
+    /**
+     * Sets up the test fixture.
+     * Called before every test case method.
+     */
+    public void setUp()
+    {
+        party = new Sand();
+        jimbo = new Water();
+        jonny = new Steel();
+        mobius = new Steel();
+        worldy = new ParticleWorld();
+    }
+
+
+    // ----------------------------------------------------------
+
+    public void testGetDensity() {
+        assertEquals(2.5, party.getDensity(), 0.0);
+    }
+
+    public void testGetVelocity() {
+        assertEquals(0.0, party.getVelocity(), 0.0);
+    }
+
+    public void testGetAcceleration() {
+        assertEquals(1.0, party.getAcceleration(), 0.0);
+    }
+
+    public void testGetStrength() {
+        assertEquals(100, party.getStrength());
+    }
+
+    public void testWillDissolve() {
+        assertTrue(party.willDissolve());
+    }
+
+    public void testWeaken() {
+        for (int i = 0; i < 100; i++) {
+            party.weaken();
+        }
+        assertEquals(0, party.getStrength());
+    }
+
+    public void testIsFalling() {
+        worldy.add(party, 100, 249);
+
+        assertEquals(false, party.isFalling());
+    }
+
+    public void testIsFalling2() {
+        worldy.add(party, 100, 230);
+
+        assertTrue(party.isFalling());
+    }
+
+    public void testIsFalling3() {
+        worldy.add(party, 100, 230);
+        worldy.add(jimbo, 100, 231);
+
+        assertEquals(false, party.isFalling());
+    }
+
+    public void testFall() {
+        worldy.add(party, 100, 200);
+        worldy.add(jimbo, 100, 210);
+
+        party.fall();
+        party.fall();
+        party.fall();
+        party.fall();
+        party.fall();
+
+        assertEquals(209, party.getGridY());
+        assertEquals(0, party.getVelocity(), 0.0);
+    }
+
+    public void testSwapPlaces() {
+        worldy.add(party, 100, 200);
+
+        assertEquals(false, party.swapPlacesIfPossible(-2, -2));
+    }
+
+    public void testSwapPlaces2() {
+        worldy.add(party, 100, 200);
+
+        assertEquals(false, party.swapPlacesIfPossible(-2, 2));
+    }
+
+    public void testSwapPlaces3() {
+        worldy.add(party, 100, 200);
+
+        assertEquals(false, party.swapPlacesIfPossible(2, -2));
+    }
+
+    public void testSwapPlaces4() {
+        worldy.add(party, 100, 200);
+
+        assertEquals(false, party.swapPlacesIfPossible(300, -2));
+    }
+
+    public void testDodge() {
+        worldy.add(party, 100, 200);
+        worldy.add(jimbo, 100, 201);
+
+        assertTrue(party.dodge());
+        assertEquals(201, party.getGridY());
+    }
+
+    public void testDodge2() {
+        worldy.add(party, 100, 200);
+        worldy.add(jimbo, 99, 201);
+        worldy.add(jonny, 100, 201);
+
+        assertTrue(party.dodge());
+        assertEquals(99, party.getGridX());
+        assertEquals(201, party.getGridY());
+    }
+
+    public void testDodge3() {
+        worldy.add(party, 100, 200);
+        worldy.add(jimbo, 101, 201);
+        worldy.add(jonny, 100, 201);
+        worldy.add(mobius, 99, 201);
+
+        assertTrue(party.dodge());
+        assertEquals(101, party.getGridX());
+        assertEquals(201, party.getGridY());
+    }
+
+    public void testAct() {
+        worldy.add(party, 100, 200);
+        worldy.add(mobius, 100, 205);
+
+        party.act();
+        party.act();
+        party.act();
+
+        assertEquals(204, party.getGridY());
+    }
+
+    public void testAct2() {
+        worldy.add(party, 100, 200);
+        worldy.add(mobius, 100, 201);
+
+        party.act();
+
+        assertEquals(99, party.getGridX());
+        assertEquals(201, party.getGridY());
+    }
+
+
+
+
+
+
+}

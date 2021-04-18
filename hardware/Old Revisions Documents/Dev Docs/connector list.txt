@@ -1,0 +1,103 @@
+A1. Universal Ground
+A2. MOTEC 0V Engine
+A3. 12V+ for MOTEC
+A4. GND for MOTEC
+A5. 5V+ for BSPD
+A6. GND for BSPD
+A7. BSPD Fault Indicator Input
+A8. Kill Sense Signal Output to BSPD
+A9. BSPD FP&IC Relay Switch +
+A10. BSPD FP&IC Relay Switch --
+A11. Throttle Pedal Pot 1 Signal (from BSPD)
+A12. Brake Pressure Sensor Signal (from BSPD)
+A13. 5V+ for Dash Display
+A14. GND for Dash Display 
+A15. TX to Dash Display 
+A16. RX from Dash Display
+A17. 5V+ for Telemetry
+A18. GND for Telemetry
+A19. TX to Telemetry
+A20. RX from Telemetry
+A21. 7.5V+ for DRS Servo
+A22. GND for DRS Servo
+A23. Signal to DRS Servo
+A24. 7.5V+ for Brake Bias Servo
+A25. GND for Brake Bias Servo
+A26. Signal for Brake Bias Servo
+A27. 12V+ for Electrical Panel Fan
+A28. GND for Electrical Panel Fan
+A29. Steering Position Pot 3.3V+
+A30. Steering Position Pot GND
+A31. Steering Position Pot Signal
+A32. Steering Position Repeat to MOTEC from DAC0
+A33. Gear Signal N
+A34. Gear Signal 1
+A35. Gear Signal 2
+A36. Gear Signal 3
+A37. Gear Signal 4
+A38. Gear Signal 5
+A39. Gear Sense output to MOTEC
+A40. Nuetral Button Repeat to MOTEC
+A41. Launch Control Button Repeat to MOTEC
+A42. CANBUS GND
+A43. CANBUS LOW
+A44. CANBUS HIGH
+A45. Brale Bias ToggleSwitch InPin 2
+A46. Brake Bias ToggleSwitch OutPin 1
+A47. Brake Bias ToggleSwitch OutPin 4
+A48. Brake Bias ToggleSwitch OutPin 6
+A49. DRS Button +
+A50. DRS Button --
+A51. Nuetral Button +
+A52. Nuetral Button --
+A53. Launch Control Button +
+A54. Launch Control Button --
+A55. Data Log Toggle Switch +
+A56. Data Log Toggle Switch --
+A57. Engine Kill Switch +
+A58. Engine Kill Switch --
+A59. Crank Switch +
+A60. Crank Switch -
+
+B1. BOTS Switch +
+B2. BOTS Sitch --
+B3. Cockpit Kill Switch +
+B4. Cockpit Kill Switch --
+B5. Fuel Pump Enable Signal from MOTEC
+B6. Fan Enable Signal from MOTEC
+B7. Auxiliary1 Enable Signal from MOTEC
+B8. Auxiliary2 Enable Signal from MOTEC
+B9. FAN GROUP 1 +
+B10. FAN GROUP 1 --
+B11. FAN GROUP 2 +
+B12. FAN GROUP 2 --
+B13. IGNITION COIL +
+B14. IGNITION COIL --
+B15. FUEL PUMP +
+B16. FUEL PUMP --
+B17. LAMBDA SENSOR +
+B18. LAMBDA SENSOR --
+B19. AUXILIARY1 +
+B20. AUXILIARY1 --
+B21. AUXILIARY2 +
+B22. AUXILIARY2 --
+B23. 
+B24.
+B25.
+B26. 
+B27.
+B28.
+B29. 
+B30.
+B31.
+B32.
+B33.
+B34. 
+
+
+C1. AC/DC +
+C2. AC/DC --
+C3. BATT +
+C4. BATT --
+C5. Starter Motor +
+C6. Starter Motor --
