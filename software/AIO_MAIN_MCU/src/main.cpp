@@ -1,5 +1,7 @@
 #include <Arduino.h>
 
+#include "aioMainMCU.hpp"
+
 void setup() {
   
   while(1)
