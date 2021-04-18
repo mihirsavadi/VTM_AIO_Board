@@ -11,9 +11,13 @@
 
 #include "pin_definitions.hpp"
 
+// this library for SD card usage https://github.com/PaulStoffregen/SD
 #include <SPI.h>
-#include <SD.h>
+#include <SD.h> 
+
 // #include <Adafruit_GPS.h> 
+
+#define ERDELIM String(". ")
 
 /* struct to hold all current sense points */
 struct currentData
@@ -66,14 +70,21 @@ struct signalInputs
 class aioMainMCU
 {
     public:
-        /* Constructor to initialize all pins and peripherals */
+        /* Default constructor to initialize all pins and peripherals */
         aioMainMCU();
 
         /* read all inputs (analog and digital) and update private fields*/
         void readInputs();
 
-        /* log all inputs into sd card */
+        /* log all data in private fields into sd card in csv format
+            TODO: establish order of data in line
+            TODO: how to log errors
+        */
         void logAllInputs();
+
+        /* getter for errors. returns true if error present, and returns
+            error string by reference argument*/
+        bool const getError(String &errorDescription);
 
     private:
         /* struct to hold sampled current sense data*/
@@ -84,6 +95,16 @@ class aioMainMCU
 
         /* struct to hold other signal input data */
         signalInputs sigIns;
+
+        /* error flag. high if error*/
+        bool errorPresent;
+        /* error string. each error delineated by ". " which is an included macro.
+            So every addition to this has to be follow code
+            errorstring.append(<insert error description here> + ERDELIM)*/
+        String errorstring;
+
+        /* File for storage of data */
+        File dataFile;
 };
 
 #endif

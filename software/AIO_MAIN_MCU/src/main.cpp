@@ -3,10 +3,15 @@
 #include "aioMainMCU.hpp"
 
 void setup() {
+
+  Serial.begin(9600);
+
+  aioMainMCU mainMCU;
   
   while(1)
   {
-
+    mainMCU.readInputs();
+    mainMCU.logAllInputs();
   }
 }
 
