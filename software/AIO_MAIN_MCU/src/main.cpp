@@ -10,6 +10,16 @@ void setup() {
   
   while(1)
   {
+    String error;
+    if (mainMCU.getError(error))
+    {
+      Serial.println(error);
+    }
+    else
+    {
+      Serial.println("NO ERROR!");
+    }
+
     mainMCU.readInputs();
     mainMCU.logAllInputs();
   }
