@@ -25,9 +25,10 @@ I've tried my best to comment as much as possible, but if you have any questions
 ## TODOS and Notes
 
 - Add pictures of the board to this readme
-- Build base classes/API for MAIN MCU
-- Sort out CANBUS and UART COMMS
 - Build base classes/API for DRS MCU
+- Implement IMU and GPS integration into the [aioMainMCU class](software/AIO_MAIN_MCU/src/aioMainMCU.cpp)
+- Implement UART comms between DRS and MAIN MCU's
+- Sort out CANBUS in MAIN MCU
 - Clean up old revision subdirectories with information regarding what went wrong with them
 - Include links to lecture videos describing entire system that we made (to youtube or something)
 - Include wire map information here when that is all finalized and hashed out.  
