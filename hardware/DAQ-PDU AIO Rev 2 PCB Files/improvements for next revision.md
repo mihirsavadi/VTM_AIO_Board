@@ -2,10 +2,8 @@
 
 - Order schematic net ports directions properly.  
 - Steering position net goes into a non ADC port in the Main Teensy3.5, this is a dumb mistake.
-- Change name of AIO instead of DAQ_PDU AIO. 
-
-
-
+- Change name of AIO instead of DAQ_PDU AIO.
+- Use optoisolaters/optocouplers to buffer digital from power stages to mcu inputs, e.g. killsense on page 3 of schematic
 
 # Various Older Comments Dont Delete
 Fuse only, from the highside (no two wires - grounded to a pin in motec) [current sensors in all]
