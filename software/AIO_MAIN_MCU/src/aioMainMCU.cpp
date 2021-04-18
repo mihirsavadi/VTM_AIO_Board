@@ -123,6 +123,15 @@ void aioMainMCU::logAllInputs()
         dataLine.concat(String(this->sigIns.neutralButtonPressed) + ", ");
         dataLine.concat(String(this->sigIns.launchButtonPressed) + ", ");
         dataLine.concat(String(this->sigIns.sdCardDetected));
+
+        if(this->errorPresent)
+        {
+            dataLine.concat(String("NO ERRORS PRESENT"));
+        }
+        else
+        {
+            dataLine.concat("ERRORS PRESENT: " + this->errorstring);
+        }
     }
     else
     {
