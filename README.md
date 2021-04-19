@@ -34,4 +34,5 @@ I've tried my best to comment as much as possible, but if you have any questions
 - Sort out CANBUS in MAIN MCU
 - Clean up old revision subdirectories with information regarding what went wrong with them
 - Include links to lecture videos describing entire system that we made (to youtube or something)
-- Include wire map information here when that is all finalized and hashed out.  
+- Include wire map information here when that is all finalized and hashed out. 
+- Add the CAD models for the AIO enclosure + BOM. Add a little window for a tiny fan for cooling, embedded flush into the enclosure.
