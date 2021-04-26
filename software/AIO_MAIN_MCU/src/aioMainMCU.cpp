@@ -33,8 +33,73 @@ aioMainMCU::aioMainMCU()
         this->errorPresent = true;
         this->errorstring.concat("Error opening datalog file" + ERDELIM);
     }
-    // to put lines into datafile from here into a new line just do 
-    //  "this->dataFile.println(<insert string here>);"
+    else
+    {
+        String firstLine;
+
+        firstLine.concat("shiftSolenoid Current, ");
+        firstLine.concat("GSensor Current, ");
+        firstLine.concat("syncSensor Current, ");
+        firstLine.concat("EGT Current, ");
+        firstLine.concat("injector Current, ");
+        firstLine.concat("turboSolenoid Current, ");
+        firstLine.concat("LTC Current, ");
+        firstLine.concat("fuelPump Current, ");
+        firstLine.concat("ignitionCoil Current, ");
+        firstLine.concat("fan Current, ");
+        firstLine.concat("auxiliaryStage Current, ");
+        firstLine.concat("motec Current, ");
+        firstLine.concat("acdcConverter Current, ");
+        firstLine.concat("battery Current, ");
+        firstLine.concat("servo Current, ");
+
+        firstLine.concat("acdcConverter Voltage, ");
+        firstLine.concat("battery Voltage, ");
+
+        firstLine.concat("gearSense ADC read, ");
+        firstLine.concat("throttleSignal ADC read, ");
+        firstLine.concat("brakeSignal ADC read, ");
+        firstLine.concat("bspdFault Digital read, ");
+        firstLine.concat("killsense Digital read, ");
+        firstLine.concat("dataLogButtonPressed Digital read, ");
+        firstLine.concat("neutralButtonPressed Digital read, ");
+        firstLine.concat("launchButtonPressed Digital read, ");
+        firstLine.concat("sdCardDetected Digital read, ");
+
+        firstLine.concat("year GPSdata, ");
+        firstLine.concat("month GPSdata, ");
+        firstLine.concat("day GPSdata, ");
+        firstLine.concat("hour GPSdata, ");
+        firstLine.concat("min GPSdata, ");
+        firstLine.concat("sec GPSdata, ");
+        firstLine.concat("mSec GPSdata, ");
+        firstLine.concat("gpsFix GPSdata, ");
+        firstLine.concat("fixQual GPSdata, ");
+        firstLine.concat("fixQual3d GPSdata, ");
+        firstLine.concat("sats GPSdata, ");
+        firstLine.concat("latDeg GPSdata, ");
+        firstLine.concat("longDeg GPSdata, ");
+        firstLine.concat("altitude GPSdata, ");
+        firstLine.concat("speed GPSdata, ");
+        firstLine.concat("angle GPSdata, ");
+        firstLine.concat("magVar GPSdata, ");
+        firstLine.concat("hdop GPSdata, ");
+        firstLine.concat("vdop GPSdata, ");
+        firstLine.concat("pdop GPSdata, ");
+
+        //TODO add IMU stuff here
+
+        if(this->errorPresent)
+        {
+            dataLine.concat(String("NO ERRORS PRESENT"));
+        }
+        else
+        {
+            dataLine.concat("ERRORS PRESENT: " + this->errorstring);
+        }
+
+        this->dataFile.println(firstLine);
+    }
 
     //setup GPS
     GPS.begin(9600);
@@ -168,7 +233,6 @@ void aioMainMCU::logAllInputs()
         dataLine.concat(String(this->sigIns.pdop) + ", ");
 
         // TODO ADD IMU DATA
-
 
         if(this->errorPresent)
         {
