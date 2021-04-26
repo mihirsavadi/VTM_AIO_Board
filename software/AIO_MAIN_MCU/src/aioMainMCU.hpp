@@ -18,7 +18,9 @@
 #include <SPI.h>
 #include <SD.h> 
 
-// #include <Adafruit_GPS.h> 
+// GPS Library Stuff. Must Setup outside class declaration strangely.
+#include <Adafruit_GPS.h>
+Adafruit_GPS GPS(&Serial3);
 
 #define ERDELIM String(". ")
 
@@ -64,6 +66,23 @@ struct signalInputs
     bool neutralButtonPressed;
     bool launchButtonPressed;
     bool sdCardDetected;
+
+    //GPS Data
+    uint8_t year, month, day, hour, min, sec;
+    uint16_t mSec;
+    bool gpsFix;
+    uint8_t fixQual;   //< Fix quality (0, 1, 2 = Invalid, GPS, DGPS)
+    uint8_t fixQual3d; //< 3D fix quality (1, 3, 3 = Nofix, 2D fix, 3D fix)
+    uint8_t sats;      //< Number of satellites in use
+    float latDeg, longDeg; // Lat and Long in decimal degres
+    float altitude;        // alt in meters above mean sea level
+    float speed;           // groundspeed in knots
+    float angle;           // course in degrees from true north
+    float magVar;          // magnetic variation in degrees vs. true north
+    float hdop, vdop, pdop;// relative accuracy of horizontal, vertical, and
+                           //   overall position respectively
+
+    //IMU Data
 };
 
 /*
@@ -78,16 +97,6 @@ class aioMainMCU
 
         /* read all inputs (analog and digital) and update private fields*/
         void readInputs();
-
-        //TODO
-        /* Get all current GPS data and return string in format:
-            <TODO: figure out format>   */
-        String getGPSData();
-
-        //TODO
-        /* Get all current IMU data and return string in format:
-            <TODO: figure out format>   */
-        String getIMUData();
 
         /* log all data in private fields into sd card in csv format.
             See the .cpp for order in which data is printed per line.

@@ -17,7 +17,9 @@ aioMainMCU::aioMainMCU()
     analogReadResolution(12);
     analogReadAveraging(10); //set no. of averaging per read.
     
-    //setup SD card
+    //setup SD card 
+    // (add first line on startup to give guide to whats in each column)
+    // see logAllInputs() method for order of entry
     pinMode(SPI_CS_0, OUTPUT);
     if (!SD.begin(SPI_CS_0))
     {
@@ -34,11 +36,14 @@ aioMainMCU::aioMainMCU()
     // to put lines into datafile from here into a new line just do 
     //  "this->dataFile.println(<insert string here>);"
 
-    //TODO
-    //setup IMU
+    //setup GPS
+    GPS.begin(9600);
+    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA); //ask for type of data
+    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_10HZ); //set 10Hz update rate
+    GPS.sendCommand(PGCMD_ANTENNA); //request update on antenna
 
     //TODO
-    //setup GPS
+    //setup IMU
 }
 
 //TODO
@@ -75,26 +80,40 @@ void aioMainMCU::readInputs()
     this->sigIns.neutralButtonPressed = digitalRead(BUTTON_IN_NEUTRAL);
     this->sigIns.launchButtonPressed  = digitalRead(BUTTON_IN_LAUNCHCONTROL);
     this->sigIns.sdCardDetected       = digitalRead(SD_CARD_DETECT);
-}
 
-//TODO
-String aioMainMCU::getGPSData()
-{
-    return String("dummy");
-}
+    //read all GPS data
+    GPS.read();
+    this->sigIns.year       = GPS.year;
+    this->sigIns.month      = GPS.month;
+    this->sigIns.day        = GPS.day;
+    this->sigIns.hour       = GPS.hour;
+    this->sigIns.min        = GPS.minute;
+    this->sigIns.sec        = GPS.seconds;
+    this->sigIns.mSec       = GPS.milliseconds;
+    this->sigIns.gpsFix     = GPS.fix;
+    this->sigIns.fixQual    = GPS.fixquality;
+    this->sigIns.fixQual3d  = GPS.fixquality_3d;
+    this->sigIns.sats       = GPS.satellites;
+    this->sigIns.latDeg     = GPS.latitudeDegrees;
+    this->sigIns.longDeg    = GPS.longitudeDegrees;
+    this->sigIns.altitude   = GPS.altitude;
+    this->sigIns.speed      = GPS.speed;
+    this->sigIns.angle      = GPS.angle;
+    this->sigIns.magVar     = GPS.magvariation;
+    this->sigIns.hdop       = GPS.HDOP;
+    this->sigIns.vdop       = GPS.VDOP;
+    this->sigIns.pdop       = GPS.PDOP;
 
-//TODO
-String aioMainMCU::getIMUData()
-{
-    return String("dummy");
+    //read all IMU data TODO
 }
 
 void aioMainMCU::logAllInputs()
 {
     String dataLine;
 
-    if(dataFile)
+    if(this->dataFile)
     {
+        // current data
         dataLine.concat(String(this->current.shiftSolenoid) + ", ");
         dataLine.concat(String(this->current.GSensor) + ", ");
         dataLine.concat(String(this->current.syncSensor) + ", ");
@@ -111,9 +130,11 @@ void aioMainMCU::logAllInputs()
         dataLine.concat(String(this->current.battery) + ", ");
         dataLine.concat(String(this->current.servo) + ", ");
 
+        // voltage data
         dataLine.concat(String(this->voltage.acdcConverter) + ", ");
         dataLine.concat(String(this->voltage.battery) + ", ");
 
+        // signal input data
         dataLine.concat(String(this->sigIns.gearSense) + ", ");
         dataLine.concat(String(this->sigIns.throttleSignal) + ", ");
         dataLine.concat(String(this->sigIns.brakeSignal) + ", ");
@@ -123,6 +144,31 @@ void aioMainMCU::logAllInputs()
         dataLine.concat(String(this->sigIns.neutralButtonPressed) + ", ");
         dataLine.concat(String(this->sigIns.launchButtonPressed) + ", ");
         dataLine.concat(String(this->sigIns.sdCardDetected));
+
+        // GPS data
+        dataLine.concat(String(this->sigIns.year) + ", ");
+        dataLine.concat(String(this->sigIns.month) + ", ");
+        dataLine.concat(String(this->sigIns.day) + ", ");
+        dataLine.concat(String(this->sigIns.hour) + ", ");
+        dataLine.concat(String(this->sigIns.min) + ", ");
+        dataLine.concat(String(this->sigIns.sec) + ", ");
+        dataLine.concat(String(this->sigIns.mSec) + ", ");
+        dataLine.concat(String(this->sigIns.gpsFix) + ", ");
+        dataLine.concat(String(this->sigIns.fixQual) + ", ");
+        dataLine.concat(String(this->sigIns.fixQual3d) + ", ");
+        dataLine.concat(String(this->sigIns.sats) + ", ");
+        dataLine.concat(String(this->sigIns.latDeg) + ", ");
+        dataLine.concat(String(this->sigIns.longDeg) + ", ");
+        dataLine.concat(String(this->sigIns.altitude) + ", ");
+        dataLine.concat(String(this->sigIns.speed) + ", ");
+        dataLine.concat(String(this->sigIns.angle) + ", ");
+        dataLine.concat(String(this->sigIns.magVar) + ", ");
+        dataLine.concat(String(this->sigIns.hdop) + ", ");
+        dataLine.concat(String(this->sigIns.vdop) + ", ");
+        dataLine.concat(String(this->sigIns.pdop) + ", ");
+
+        // TODO ADD IMU DATA
+
 
         if(this->errorPresent)
         {
