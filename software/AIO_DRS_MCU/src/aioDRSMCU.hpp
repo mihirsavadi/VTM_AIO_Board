@@ -28,7 +28,8 @@
 #define DRS_SERV_SIG 23
 #define BB_SERV_SIG  22
 
-#define BBSERVO
+#define DRS_HIGHDRAG_SERVOANGLE 150
+#define DRS_LOWDRAG_SERVOANGLE 10
 
 /* main DRS class */
 class aioDRSMCU
@@ -37,8 +38,7 @@ class aioDRSMCU
         /* default constructor to initialize all pins */
         aioDRSMCU();
 
-        //TODO
-        /* Function that drives DRS servo control in while loop 
+        /* Function that drives DRS servo control.
             Must run in infinite while loop with minimal blockage.
             If input argument is true, operation is in "press to actuate"
             mode, where the wing is in low drag when pressed, and in high
@@ -55,6 +55,8 @@ class aioDRSMCU
     private:
         Servo DRS_servo;
         Servo BB_servo;
+
+        bool DRS_LowDragFlag = false;
 };
 
 #endif
