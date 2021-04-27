@@ -4,6 +4,8 @@
 /*
     Mihir Savadi 18th April 2021
 
+    DAQ_PDU AIO BOARD REV 2
+    
     Main class to abstract away all core functionalities and initializations
     to make programming in main.cpp clean, easy, and consistent.
 

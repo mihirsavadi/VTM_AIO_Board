@@ -7,6 +7,8 @@
     Main DRS MCU class to abstract away all core functionalities and initializations
     to make programming in main.cpp clean, easy, and consistent.
 
+    DAQ_PDU AIO BOARD REV 2
+
     TODO: Ignore implementation of debouncing for now. See how servo all hooked
         up works if this is needed or not. 
     TODO: UART communication to MAIN MCU implementation. Far less trivial
