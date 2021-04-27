@@ -25,6 +25,8 @@
 #include <MPU9250.h>
 
 #define ERDELIM String(". ")
+#define V_OFFSET 0 //volts offset for battery and acdcConverter voltage measurements
+#define C_OFFSET 0 //amps offset for all current sensor measurements
 
 /* struct to hold all current sense points */
 struct currentData
@@ -117,6 +119,9 @@ class aioMainMCU
         /* getter for errors. returns true if error present, and returns
             error string by reference argument*/
         bool const getError(String &errorDescription);
+
+        /* convert input ADC reading to current value in amps */
+        float const ampsFromADC(uint16_t ADC_reading);
 
     private:
         /* struct to hold sampled current sense data*/

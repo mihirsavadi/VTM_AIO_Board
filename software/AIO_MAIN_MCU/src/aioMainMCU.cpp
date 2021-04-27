@@ -2,6 +2,11 @@
 
 #include "aioMainMCU.hpp"
 
+//floating point map helper function
+long mapfl(long x, long in_min, long in_max, long out_min, long out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 // GPS Library Stuff. Must Setup outside class declaration strangely.
 Adafruit_GPS GPS(&Serial3);
 // IMU Library stuff. Must Setup outside class declaration strangely.
@@ -20,7 +25,7 @@ aioMainMCU::aioMainMCU()
     //set up ADC input ports for analog input at 12bits
     analog_init();
     analogReadResolution(12);
-    analogReadAveraging(10); //set no. of averaging per read.
+    analogReadAveraging(5); //set no. of averaging per read.
 
     //setup GPS
     GPS.begin(9600);
@@ -65,24 +70,24 @@ aioMainMCU::aioMainMCU()
     {
         String firstLine;
 
-        firstLine.concat("shiftSolenoid Current ADC read, ");
-        firstLine.concat("GSensor Current ADC read, ");
-        firstLine.concat("syncSensor Current ADC read, ");
-        firstLine.concat("EGT Current ADC read, ");
-        firstLine.concat("injector Current ADC read, ");
-        firstLine.concat("turboSolenoid Current ADC read, ");
-        firstLine.concat("LTC Current ADC read, ");
-        firstLine.concat("fuelPump Current ADC read, ");
-        firstLine.concat("ignitionCoil Current ADC read, ");
-        firstLine.concat("fan Current ADC read, ");
-        firstLine.concat("auxiliaryStage Current ADC read, ");
-        firstLine.concat("motec Current ADC read, ");
-        firstLine.concat("acdcConverter Current ADC read, ");
-        firstLine.concat("battery Current ADC read, ");
-        firstLine.concat("servo Current ADC read, ");
+        firstLine.concat("shiftSolenoid Current (Amps), ");
+        firstLine.concat("GSensor Current (Amps), ");
+        firstLine.concat("syncSensor Current (Amps), ");
+        firstLine.concat("EGT Current (Amps), ");
+        firstLine.concat("injector Current (Amps), ");
+        firstLine.concat("turboSolenoid Current (Amps), ");
+        firstLine.concat("LTC Current (Amps), ");
+        firstLine.concat("fuelPump Current (Amps), ");
+        firstLine.concat("ignitionCoil Current (Amps), ");
+        firstLine.concat("fan Current (Amps), ");
+        firstLine.concat("auxiliaryStage Current (Amps), ");
+        firstLine.concat("motec Current (Amps), ");
+        firstLine.concat("acdcConverter Current (Amps), ");
+        firstLine.concat("battery Current (Amps), ");
+        firstLine.concat("servo Current (Amps), ");
 
-        firstLine.concat("acdcConverter Voltage ADC read, ");
-        firstLine.concat("battery Voltage ADC read, ");
+        firstLine.concat("acdcConverter Voltage (Volts), ");
+        firstLine.concat("battery Voltage (Volts), ");
 
         firstLine.concat("gearSense ADC read, ");
         firstLine.concat("throttleSignal ADC read, ");
@@ -142,36 +147,38 @@ aioMainMCU::aioMainMCU()
 void aioMainMCU::readInputs()
 {
     //read all current data
-    this->current.shiftSolenoid  = analogRead(CURRENT_SHIFTSOL);
-    this->current.GSensor        = analogRead(CURRENT_GSENSOR);
-    this->current.syncSensor     = analogRead(CURRENT_SYNC);
-    this->current.EGT            = analogRead(CURRENT_EGT);
-    this->current.injector       = analogRead(CURRENT_INJECTOR);
-    this->current.turboSolenoid  = analogRead(CURRENT_TURBOSOL);
-    this->current.LTC            = analogRead(CURRENT_LTC);
-    this->current.fuelPump       = analogRead(CURRENT_FP);
-    this->current.ignitionCoil   = analogRead(CURRENT_IC);
-    this->current.fan            = analogRead(CURRENT_FAN);
-    this->current.auxiliaryStage = analogRead(CURRENT_AUX);
-    this->current.motec          = analogRead(CURRENT_MOTEC);
-    this->current.acdcConverter  = analogRead(CURRENT_ACDC);
-    this->current.battery        = analogRead(CURRENT_BATTERY);
-    this->current.servo          = analogRead(CURRENT_SERVO);
+    this->current.shiftSolenoid  = ampsFromADC(analogRead(CURRENT_SHIFTSOL));
+    this->current.GSensor        = ampsFromADC(analogRead(CURRENT_GSENSOR));
+    this->current.syncSensor     = ampsFromADC(analogRead(CURRENT_SYNC));
+    this->current.EGT            = ampsFromADC(analogRead(CURRENT_EGT));
+    this->current.injector       = ampsFromADC(analogRead(CURRENT_INJECTOR));
+    this->current.turboSolenoid  = ampsFromADC(analogRead(CURRENT_TURBOSOL));
+    this->current.LTC            = ampsFromADC(analogRead(CURRENT_LTC));
+    this->current.fuelPump       = ampsFromADC(analogRead(CURRENT_FP));
+    this->current.ignitionCoil   = ampsFromADC(analogRead(CURRENT_IC));
+    this->current.fan            = ampsFromADC(analogRead(CURRENT_FAN));
+    this->current.auxiliaryStage = ampsFromADC(analogRead(CURRENT_AUX));
+    this->current.motec          = ampsFromADC(analogRead(CURRENT_MOTEC));
+    this->current.acdcConverter  = ampsFromADC(analogRead(CURRENT_ACDC));
+    this->current.battery        = ampsFromADC(analogRead(CURRENT_BATTERY));
+    this->current.servo          = ampsFromADC(analogRead(CURRENT_SERVO));
 
     //read all voltage data
-    this->voltage.acdcConverter = analogRead(VOLTAGE_ACDC);
-    this->voltage.battery       = analogRead(VOLTAGE_BATTERY);
+    this->voltage.acdcConverter = mapfl(analogRead(VOLTAGE_ACDC), 0, 4096, 0, 3.3)*5
+                                    + V_OFFSET;
+    this->voltage.battery       = mapfl(analogRead(VOLTAGE_BATTERY), 0, 4096, 0, 3.3)*5
+                                    + V_OFFSET;
 
     //read all signalInput data
     this->sigIns.gearSense            = analogRead(GEARSENSE_ADC_IN);
     this->sigIns.throttleSignal       = analogRead(THROTTLE_SIG_IN);
     this->sigIns.brakeSignal          = analogRead(BRAKE_SIG_IN);
-    this->sigIns.bspdFault            = digitalRead(BSPDFAULT_IN);
-    this->sigIns.killsense            = digitalRead(KILLSENSE_IN);
-    this->sigIns.dataLogButtonPressed = digitalRead(DATALOG_BUTTON_IN);
-    this->sigIns.neutralButtonPressed = digitalRead(BUTTON_IN_NEUTRAL);
-    this->sigIns.launchButtonPressed  = digitalRead(BUTTON_IN_LAUNCHCONTROL);
-    this->sigIns.sdCardDetected       = digitalRead(SD_CARD_DETECT);
+    this->sigIns.bspdFault            = digitalReadFast(BSPDFAULT_IN);
+    this->sigIns.killsense            = digitalReadFast(KILLSENSE_IN);
+    this->sigIns.dataLogButtonPressed = digitalReadFast(DATALOG_BUTTON_IN);
+    this->sigIns.neutralButtonPressed = digitalReadFast(BUTTON_IN_NEUTRAL);
+    this->sigIns.launchButtonPressed  = digitalReadFast(BUTTON_IN_LAUNCHCONTROL);
+    this->sigIns.sdCardDetected       = digitalReadFast(SD_CARD_DETECT);
 
     //read all GPS data
     GPS.read();
@@ -300,10 +307,22 @@ void aioMainMCU::logAllInputs()
     }
 
     this->dataFile.println(dataLine);
+    this->dataFile.flush();
 }
 
 bool const aioMainMCU::getError(String &errorDescription)
 {
     errorDescription = this->errorstring;
     return this->errorPresent;
+}
+
+float const aioMainMCU::ampsFromADC(uint16_t ADC_reading)
+{
+    //see file:///C:/Users/m_sav/Downloads/ACS781-Datasheet.pdf page 2
+    // we are running ACS781KLRTR-150B-T which has a 8.8mV/A sensitivity.
+    // So we do a floating point scale of ADC_reading, which as input range of
+    // 0 to 4096, to an output range of 0 to 3300mV (since the ADC scales linearly from
+    // o to 3.3V max), then dividing by the ACS781 current sensor data sheet constant
+    // of 8.8mV/A, then add to C_OFFSET for calibration.
+    return (mapfl(ADC_reading, 0, 4096, 0, 3300) / 8.8) + C_OFFSET;;
 }
