@@ -5,7 +5,7 @@
 
 #include "aioMainMCU.hpp"
 
-#define includeSerialPrints false
+#define includeSerialPrints true
 
 void setup() {
 
