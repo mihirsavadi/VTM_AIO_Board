@@ -107,8 +107,8 @@ aioMainMCU::aioMainMCU()
         firstLine.concat("sec GPSdata (GMT), ");
         firstLine.concat("mSec GPSdata (GMT), ");
         firstLine.concat("gpsFix GPSdata (T/F), ");
-        firstLine.concat("fixQual GPSdata (0, 1, 2 = Invalid, GPS, DGPS), ");
-        firstLine.concat("fixQual3d GPSdata (1, 3, 3 = Nofix, 2D fix, 3D fix), ");
+        firstLine.concat("fixQual GPSdata (0:Invalid; 1:GPS; 2:DGPS), ");
+        firstLine.concat("fixQual3d GPSdata (1:Nofix; 2:2D fix; 3:3D fix), ");
         firstLine.concat("sats GPSdata (no. of satellites in use), ");
         firstLine.concat("latDeg GPSdata (decimal degrees), ");
         firstLine.concat("longDeg GPSdata (decimal degrees), ");
