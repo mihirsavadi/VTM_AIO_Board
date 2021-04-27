@@ -2,6 +2,11 @@
 
 #include "aioMainMCU.hpp"
 
+// GPS Library Stuff. Must Setup outside class declaration strangely.
+Adafruit_GPS GPS(&Serial3);
+// IMU Library stuff. Must Setup outside class declaration strangely.
+MPU9250 IMU(Wire1, 0x68);
+
 aioMainMCU::aioMainMCU()
 {
     //set up digital input pins
@@ -16,7 +21,30 @@ aioMainMCU::aioMainMCU()
     analog_init();
     analogReadResolution(12);
     analogReadAveraging(10); //set no. of averaging per read.
-    
+
+    //setup GPS
+    GPS.begin(9600);
+    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA); //ask for type of data
+    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_10HZ); //set 10Hz update rate
+    GPS.sendCommand(PGCMD_ANTENNA); //request update on antenna
+
+    //setup IMU
+    this->sigIns.IMUbeginStatus = IMU.begin();
+    if (this->sigIns.IMUbeginStatus < 0)
+    {
+        this->errorPresent = true;
+        this->errorstring.concat("IMU init unsuccessful statVal: " + 
+                                  String(this->sigIns.IMUbeginStatus) + ERDELIM);
+    }
+    // setting the accelerometer full scale range to +/-8G 
+    IMU.setAccelRange(MPU9250::ACCEL_RANGE_8G);
+    // setting the gyroscope full scale range to +/-500 deg/s
+    IMU.setGyroRange(MPU9250::GYRO_RANGE_500DPS);
+    // setting DLPF bandwidth to 20 Hz
+    IMU.setDlpfBandwidth(MPU9250::DLPF_BANDWIDTH_20HZ);
+    // setting SRD to 19 for a 50 Hz update rate
+    IMU.setSrd(19);
+
     //setup SD card 
     // (add first line on startup to give guide to whats in each column)
     // see logAllInputs() method for order of entry
@@ -37,24 +65,24 @@ aioMainMCU::aioMainMCU()
     {
         String firstLine;
 
-        firstLine.concat("shiftSolenoid Current, ");
-        firstLine.concat("GSensor Current, ");
-        firstLine.concat("syncSensor Current, ");
-        firstLine.concat("EGT Current, ");
-        firstLine.concat("injector Current, ");
-        firstLine.concat("turboSolenoid Current, ");
-        firstLine.concat("LTC Current, ");
-        firstLine.concat("fuelPump Current, ");
-        firstLine.concat("ignitionCoil Current, ");
-        firstLine.concat("fan Current, ");
-        firstLine.concat("auxiliaryStage Current, ");
-        firstLine.concat("motec Current, ");
-        firstLine.concat("acdcConverter Current, ");
-        firstLine.concat("battery Current, ");
-        firstLine.concat("servo Current, ");
+        firstLine.concat("shiftSolenoid Current ADC read, ");
+        firstLine.concat("GSensor Current ADC read, ");
+        firstLine.concat("syncSensor Current ADC read, ");
+        firstLine.concat("EGT Current ADC read, ");
+        firstLine.concat("injector Current ADC read, ");
+        firstLine.concat("turboSolenoid Current ADC read, ");
+        firstLine.concat("LTC Current ADC read, ");
+        firstLine.concat("fuelPump Current ADC read, ");
+        firstLine.concat("ignitionCoil Current ADC read, ");
+        firstLine.concat("fan Current ADC read, ");
+        firstLine.concat("auxiliaryStage Current ADC read, ");
+        firstLine.concat("motec Current ADC read, ");
+        firstLine.concat("acdcConverter Current ADC read, ");
+        firstLine.concat("battery Current ADC read, ");
+        firstLine.concat("servo Current ADC read, ");
 
-        firstLine.concat("acdcConverter Voltage, ");
-        firstLine.concat("battery Voltage, ");
+        firstLine.concat("acdcConverter Voltage ADC read, ");
+        firstLine.concat("battery Voltage ADC read, ");
 
         firstLine.concat("gearSense ADC read, ");
         firstLine.concat("throttleSignal ADC read, ");
@@ -66,52 +94,51 @@ aioMainMCU::aioMainMCU()
         firstLine.concat("launchButtonPressed Digital read, ");
         firstLine.concat("sdCardDetected Digital read, ");
 
-        firstLine.concat("year GPSdata, ");
-        firstLine.concat("month GPSdata, ");
-        firstLine.concat("day GPSdata, ");
-        firstLine.concat("hour GPSdata, ");
-        firstLine.concat("min GPSdata, ");
-        firstLine.concat("sec GPSdata, ");
-        firstLine.concat("mSec GPSdata, ");
-        firstLine.concat("gpsFix GPSdata, ");
-        firstLine.concat("fixQual GPSdata, ");
-        firstLine.concat("fixQual3d GPSdata, ");
-        firstLine.concat("sats GPSdata, ");
-        firstLine.concat("latDeg GPSdata, ");
-        firstLine.concat("longDeg GPSdata, ");
-        firstLine.concat("altitude GPSdata, ");
-        firstLine.concat("speed GPSdata, ");
-        firstLine.concat("angle GPSdata, ");
-        firstLine.concat("magVar GPSdata, ");
-        firstLine.concat("hdop GPSdata, ");
-        firstLine.concat("vdop GPSdata, ");
-        firstLine.concat("pdop GPSdata, ");
+        firstLine.concat("year GPSdata (GMT), ");
+        firstLine.concat("month GPSdata (GMT), ");
+        firstLine.concat("day GPSdata (GMT), ");
+        firstLine.concat("hour GPSdata (GMT), ");
+        firstLine.concat("min GPSdata (GMT), ");
+        firstLine.concat("sec GPSdata (GMT), ");
+        firstLine.concat("mSec GPSdata (GMT), ");
+        firstLine.concat("gpsFix GPSdata (T/F), ");
+        firstLine.concat("fixQual GPSdata (0, 1, 2 = Invalid, GPS, DGPS), ");
+        firstLine.concat("fixQual3d GPSdata (1, 3, 3 = Nofix, 2D fix, 3D fix), ");
+        firstLine.concat("sats GPSdata (no. of satellites in use), ");
+        firstLine.concat("latDeg GPSdata (decimal degrees), ");
+        firstLine.concat("longDeg GPSdata (decimal degrees), ");
+        firstLine.concat("altitude GPSdata (meters above MSL), ");
+        firstLine.concat("speed GPSdata (knots), ");
+        firstLine.concat("angle GPSdata (course degrees from true north), ");
+        firstLine.concat("magVar GPSdata (magnetic variation in degrees vs true north), ");
+        firstLine.concat("hdop GPSdata (horizontal relative accuracy), ");
+        firstLine.concat("vdop GPSdata (horizontal relative accuracy), ");
+        firstLine.concat("pdop GPSdata (horizontal relative accuracy), ");
 
-        //TODO add IMU stuff here
+        firstLine.concat("accelX IMUdata (m/(s^2)), ");
+        firstLine.concat("accelY IMUdata (m/(s^2)), ");
+        firstLine.concat("accelZ IMUdata (m/(s^2)), ");
+        firstLine.concat("gyroX IMUdata (rad/s), ");
+        firstLine.concat("gyroY IMUdata (rad/s), ");
+        firstLine.concat("gyroZ IMUdata (rad/s), ");
+        firstLine.concat("magX IMUdata (uT), ");
+        firstLine.concat("magY IMUdata (uT), ");
+        firstLine.concat("magZ IMUdata (uT), ");
+        firstLine.concat("IMU_dieTemp IMUdata (C), ");
 
         if(this->errorPresent)
         {
-            dataLine.concat(String("NO ERRORS PRESENT"));
+            firstLine.concat(String("NO ERRORS PRESENT"));
         }
         else
         {
-            dataLine.concat("ERRORS PRESENT: " + this->errorstring);
+            firstLine.concat("ERRORS PRESENT: " + this->errorstring);
         }
 
         this->dataFile.println(firstLine);
     }
-
-    //setup GPS
-    GPS.begin(9600);
-    GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA); //ask for type of data
-    GPS.sendCommand(PMTK_SET_NMEA_UPDATE_10HZ); //set 10Hz update rate
-    GPS.sendCommand(PGCMD_ANTENNA); //request update on antenna
-
-    //TODO
-    //setup IMU
 }
 
-//TODO
 void aioMainMCU::readInputs()
 {
     //read all current data
@@ -169,7 +196,18 @@ void aioMainMCU::readInputs()
     this->sigIns.vdop       = GPS.VDOP;
     this->sigIns.pdop       = GPS.PDOP;
 
-    //read all IMU data TODO
+    //read all IMU data
+    IMU.readSensor();
+    this->sigIns.accelX = IMU.getAccelX_mss();
+    this->sigIns.accelY = IMU.getAccelY_mss();
+    this->sigIns.accelZ = IMU.getAccelZ_mss();
+    this->sigIns.gyroX  = IMU.getGyroX_rads();
+    this->sigIns.gyroY  = IMU.getGyroY_rads();
+    this->sigIns.gyroZ  = IMU.getGyroZ_rads();
+    this->sigIns.magX   = IMU.getMagX_uT();
+    this->sigIns.magY   = IMU.getMagY_uT();
+    this->sigIns.magZ   = IMU.getMagZ_uT();
+    this->sigIns.IMU_dieTemp = IMU.getTemperature_C();
 }
 
 void aioMainMCU::logAllInputs()
@@ -232,7 +270,17 @@ void aioMainMCU::logAllInputs()
         dataLine.concat(String(this->sigIns.vdop) + ", ");
         dataLine.concat(String(this->sigIns.pdop) + ", ");
 
-        // TODO ADD IMU DATA
+        // IMU data
+        dataLine.concat(String(this->sigIns.accelX) + ", ");
+        dataLine.concat(String(this->sigIns.accelY) + ", ");
+        dataLine.concat(String(this->sigIns.accelZ) + ", ");
+        dataLine.concat(String(this->sigIns.gyroX) + ", ");
+        dataLine.concat(String(this->sigIns.gyroY) + ", ");
+        dataLine.concat(String(this->sigIns.gyroZ) + ", ");
+        dataLine.concat(String(this->sigIns.magX) + ", ");
+        dataLine.concat(String(this->sigIns.magY) + ", ");
+        dataLine.concat(String(this->sigIns.magZ) + ", ");
+        dataLine.concat(String(this->sigIns.IMU_dieTemp) + ", ");
 
         if(this->errorPresent)
         {

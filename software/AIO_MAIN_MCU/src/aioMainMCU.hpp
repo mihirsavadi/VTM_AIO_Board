@@ -20,7 +20,9 @@
 
 // GPS Library Stuff. Must Setup outside class declaration strangely.
 #include <Adafruit_GPS.h>
-Adafruit_GPS GPS(&Serial3);
+
+// IMU Library stuff. Must Setup outside class declaration strangely.
+#include <MPU9250.h>
 
 #define ERDELIM String(". ")
 
@@ -83,6 +85,11 @@ struct signalInputs
                            //   overall position respectively
 
     //IMU Data
+    int IMUbeginStatus;           // < 0 is bad.
+    float accelX, accelY, accelZ; //accelerometer measurements in m/(s^2)
+    float gyroX, gyroY, gyroZ;    //gyro measurements in rad/s
+    float magX, magY, magZ;       //magnetometer measurements in uT
+    float IMU_dieTemp;            //IMU die temperature in C
 };
 
 /*
