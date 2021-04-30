@@ -3,7 +3,7 @@
 #include "aioMainMCU.hpp"
 
 //floating point map helper function
-long mapfl(long x, long in_min, long in_max, long out_min, long out_max) {
+float mapfl(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
@@ -324,5 +324,12 @@ float const aioMainMCU::ampsFromADC(uint16_t ADC_reading)
     // 0 to 4096, to an output range of 0 to 3300mV (since the ADC scales linearly from
     // 0 to 3.3V max), then dividing by the ACS781 current sensor data sheet constant
     // of 8.8mV/A, then add to C_OFFSET for calibration.
-    return (mapfl(ADC_reading, 0, 4096, 0, 3300) / 8.8) + C_OFFSET;;
+    return (mapfl(ADC_reading, 0, 4096, 0, 3300) / 8.8) - C_OFFSET;;
+}
+
+void const aioMainMCU::printToMonitor() 
+{
+    Serial.print("BattV: " + String(mapfl(analogRead(VOLTAGE_BATTERY), 0, 4096, 0, 3.3)*5) + "V");
+    // Serial.println(", BattA: " + String(this->ampsFromADC(analogRead(CURRENT_BATTERY))) + "A");
+    Serial.println(", BattA: " + String(analogRead(CURRENT_BATTERY)) + "A");
 }

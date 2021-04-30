@@ -18,19 +18,21 @@ void setup() {
   while(1)
   {
     #if includeSerialPrints == true
-      String error;
-      if (mainMCU.getError(error))
-      {
-        Serial.println(error);
-      }
-      else
-      {
-        Serial.println("NO ERROR!");
-      }
+      // String error;
+      // if (mainMCU.getError(error))
+      // {
+      //   Serial.println(error);
+      // }
+      // else
+      // {
+      //   Serial.println("NO ERROR!");
+      // }
     #endif
 
     mainMCU.readInputs();
     mainMCU.logAllInputs();
+
+    mainMCU.printToMonitor();
   }
 }
 

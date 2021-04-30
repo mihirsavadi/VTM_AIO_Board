@@ -28,7 +28,7 @@
 
 #define ERDELIM String(". ")
 #define V_OFFSET 0 //volts offset for battery and acdcConverter voltage measurements
-#define C_OFFSET 0 //amps offset for all current sensor measurements
+#define C_OFFSET 190.2668 //amps offset for all current sensor measurements
 
 /* struct to hold all current sense points */
 struct currentData
@@ -124,6 +124,9 @@ class aioMainMCU
 
         /* convert input ADC reading to current value in amps */
         float const ampsFromADC(uint16_t ADC_reading);
+
+        /* print all logged values to monitor for debugging */
+        void const printToMonitor();
 
     private:
         /* struct to hold sampled current sense data*/
