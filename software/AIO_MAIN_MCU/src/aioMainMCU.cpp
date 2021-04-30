@@ -322,7 +322,7 @@ float const aioMainMCU::ampsFromADC(uint16_t ADC_reading)
     // we are running ACS781KLRTR-150B-T which has a 8.8mV/A sensitivity.
     // So we do a floating point scale of ADC_reading, which as input range of
     // 0 to 4096, to an output range of 0 to 3300mV (since the ADC scales linearly from
-    // o to 3.3V max), then dividing by the ACS781 current sensor data sheet constant
+    // 0 to 3.3V max), then dividing by the ACS781 current sensor data sheet constant
     // of 8.8mV/A, then add to C_OFFSET for calibration.
     return (mapfl(ADC_reading, 0, 4096, 0, 3300) / 8.8) + C_OFFSET;;
 }
