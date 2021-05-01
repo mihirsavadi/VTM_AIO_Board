@@ -27,11 +27,10 @@ I've tried my best to comment as much as possible, but if you have any questions
 
 ## TODOS and Notes
 
-- Add pictures of the board to this readme
-- Finish DRS MCU class methods
-- Implement IMU and GPS integration into the [aioMainMCU class](software/AIO_MAIN_MCU/src/aioMainMCU.cpp)
+- Add more pictures of the board to this readme, assembled as well as in enclosure (include wire jumps on the back)
+- Implement BB method in DRS MCU class
+- Implement IMU and GPS integration into the [aioMainMCU class](software/AIO_MAIN_MCU/src/aioMainMCU.cpp) (*integrated, not yet tested in hardware)
 - Use RTC in GPS to get time data and add as a data point to CSV logging - IMPORTANT!
-- Calibrate current sensors to save actual amp values from ADC values.
 - Implement UART comms between DRS and MAIN MCU's
 - Sort out CANBUS in MAIN MCU
 - Clean up old revision subdirectories with information regarding what went wrong with them
