@@ -19,29 +19,19 @@ void aioDRSMCU::runDRSservo(bool pressToActuateModeEnabled)
     if (pressToActuateModeEnabled)
     {
         if (digitalReadFast(DRS_BUTTON))
-        {
             this->DRS_servo.write(DRS_LOWDRAG_SERVOANGLE);
-        }
         else
-        {
             this->DRS_servo.write(DRS_HIGHDRAG_SERVOANGLE);
-        }
     }
     else
     {
         if (digitalReadFast(DRS_BUTTON))
-        {
             this->DRS_LowDragFlag = !this->DRS_LowDragFlag;
-        }
 
         if (this->DRS_LowDragFlag)
-        {
             this->DRS_servo.write(DRS_LOWDRAG_SERVOANGLE);
-        }
         else
-        {
             this->DRS_servo.write(DRS_HIGHDRAG_SERVOANGLE);
-        }
         delay(10); //for debounce effect
     }
 }
