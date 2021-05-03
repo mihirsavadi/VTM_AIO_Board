@@ -6,6 +6,9 @@
 - Use optoisolaters/optocouplers to buffer digital from power stages to mcu inputs, e.g. killsense on page 3 of schematic
 - Fuse for servo connection
 - Resistors u75 and u76 are 4.7k ohm but its attached to a pattern for a 360 resistor
+- fill up middle gap make board dimensionally smaller
+- maybe use raspberri pi pico or some rp2040 board and just one of them to replace both main mcu and teensy for parallel servo functionality (using the rp2040's PIO logic blocks)
+- Use exclusively ACS781KLRTR-050B-T instead of the 150U's for greater resolution. 
 
 # Various Older Comments Dont Delete
 Fuse only, from the highside (no two wires - grounded to a pin in motec) [current sensors in all]
