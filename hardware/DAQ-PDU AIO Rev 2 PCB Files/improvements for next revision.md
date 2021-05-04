@@ -8,7 +8,10 @@
 - Resistors u75 and u76 are 4.7k ohm but its attached to a pattern for a 360 resistor
 - fill up middle gap make board dimensionally smaller
 - maybe use raspberri pi pico or some rp2040 board and just one of them to replace both main mcu and teensy for parallel servo functionality (using the rp2040's PIO logic blocks)
-- Use exclusively ACS781KLRTR-050B-T instead of the 150U's for greater resolution. 
+- Use exclusively ACS781KLRTR-050B-T instead of the 150U's for greater resolution.
+- Get rid of Batt and ACDC solder pads. Move literally all IO and power connections into superseal connections. Each superseal pin is good for 15A with normal thermal performance so unless really needed can just have one pin per V+ and GND. If need more just use another pin in parallel.
+- Use up dead space in the middle a bit more.  
+- Include a dedicated RTC instead of relying on GPS connection. Solder on directly since its a simple circuit. Can put under the GPS itself.
 
 # Various Older Comments Dont Delete
 Fuse only, from the highside (no two wires - grounded to a pin in motec) [current sensors in all]
