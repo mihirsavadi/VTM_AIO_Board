@@ -46,7 +46,7 @@ void aioDRSMCU::runBBservo()
     void aioDRSMCU::manualServoControl(bool controlDRS)
     {
         String command;
-        int servoPos = 180;
+        int servoPos = 90;
         int increment = 5;
 
         //set servo to middle position before doing anything else

@@ -13,6 +13,8 @@ void setup() {
   #endif
 
   aioDRSMCU drsMCU;
+
+  // drsMCU.manualServoControl(false);
   
   while(1)
   {
