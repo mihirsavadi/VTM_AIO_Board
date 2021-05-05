@@ -11,7 +11,7 @@ aioDRSMCU::aioDRSMCU()
 }
 
 
-//see this for reference for next two methods
+//see this for reference for next three methods
 // https://github.com/arduino-libraries/Servo/blob/master/examples/Knob/Knob.ino
 
 void aioDRSMCU::runDRSservo(bool pressToActuateModeEnabled)
@@ -41,3 +41,69 @@ void aioDRSMCU::runBBservo()
 {
 
 }
+
+#if includeSerialPrints == true
+    void aioDRSMCU::manualServoControl(bool controlDRS)
+    {
+        String command;
+        int servoPos = 180;
+        int increment = 5;
+
+        //set servo to middle position before doing anything else
+        Serial.print("Manual Servo Control begun. ");
+        if (controlDRS)
+        {
+            this->DRS_servo.write(servoPos);
+            Serial.println("DRS Servo in control, set to: " + String(servoPos));
+        }
+        else
+        {
+            this->BB_servo.write(servoPos);
+            Serial.println("BB Servo in control, set to: " + String(servoPos));
+
+        }
+
+        while(1)
+        {
+            if (Serial.available())
+            {
+                command = Serial.readStringUntil('\n');
+
+                if (command.equals("u"))
+                {
+                    servoPos = servoPos + increment;
+                    if (servoPos > 180)
+                        servoPos = 180;
+                    
+                    if (controlDRS)
+                    {
+                        this->DRS_servo.write(servoPos);
+                        Serial.println("DRS Servo Pos: " + String(servoPos));
+                    }
+                    else
+                    {
+                        this->BB_servo.write(servoPos);
+                        Serial.println("BB Servo Pos: " + String(servoPos));
+                    }
+                }
+                else if (command.equals("d"))
+                {
+                    servoPos = servoPos - increment;
+                    if (servoPos < 0)
+                        servoPos = 0;
+                    
+                    if (controlDRS)
+                    {
+                        this->DRS_servo.write(servoPos);
+                        Serial.println("DRS Servo Pos: " + String(servoPos));
+                    }
+                    else
+                    {
+                        this->BB_servo.write(servoPos);
+                        Serial.println("BB Servo Pos: " + String(servoPos));
+                    }
+                }
+            }
+        }
+    }
+#endif

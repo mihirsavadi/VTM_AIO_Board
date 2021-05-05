@@ -16,6 +16,10 @@
         system seems excessive, but implementing UART will help this.
 */
 
+//this macro enables macro blocks in main cpp as well as the manualServoControl()
+// method.
+#define includeSerialPrints true
+
 #include <Arduino.h>
 #include <Servo.h>
 // https://github.com/arduino-libraries/Servo
@@ -53,6 +57,11 @@ class aioDRSMCU
             3-position toggle switch.
             Must run in infinite while loop with minimal blockage. */
         void runBBservo();
+
+        #if includeSerialPrints == true
+            /* Function that takes in inputs from serial monitor to move the servo up or down. Type into serial monitor 'u' or 'd' and hit enter. 'u' will move it up, 'd' will move it down by a certain increment. Use this to help manually find positioning of servo in whatever mount. This function already has an infinite while loop inside it so it will be absolutely blocking in main.cpp, and does not need to be placed in an infinite while loop. runBBservo() and runDRSservo() must not be called when using this. If the argument is true, the DRS servo will be controlled, if false the brakebias servo will be controlled. Upload code via platform-io but use the stock arduino monitor for easiest usage*/
+            void manualServoControl(bool controlDRS);
+        #endif
 
     private:
         Servo DRS_servo;

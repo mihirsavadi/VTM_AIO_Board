@@ -5,10 +5,9 @@
 
 #include "aioDRSMCU.hpp"
 
-#define includeSerialPrints false
-
 void setup() {
 
+  //following macro block control in "aioDRSMCU.hpp" header 
   #if includeSerialPrints == true
     Serial.begin(9600);
   #endif
