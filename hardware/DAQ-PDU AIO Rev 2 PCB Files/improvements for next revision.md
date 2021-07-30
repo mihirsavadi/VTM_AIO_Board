@@ -12,6 +12,7 @@
 - Get rid of Batt and ACDC solder pads. Move literally all IO and power connections into superseal connections. Each superseal pin is good for 15A with normal thermal performance so unless really needed can just have one pin per V+ and GND. If need more just use another pin in parallel.
 - Use up dead space in the middle a bit more.  
 - Include a dedicated RTC instead of relying on GPS connection. Solder on directly since its a simple circuit. Can put under the GPS itself.
+- CANBUS differential pair signals need to be routed more properly with impedance matching and such, even if lowspeed. See this video for guidance: https://www.youtube.com/watch?v=VRJI0X-6yTg
 
 # Various Older Comments Dont Delete
 Fuse only, from the highside (no two wires - grounded to a pin in motec) [current sensors in all]
