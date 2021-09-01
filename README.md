@@ -5,7 +5,8 @@
 This repository contains all documentation and material related to [Virginia Tech's Formula SAE team - Virginia Tech Motorsports](https://vtmotorsports.weebly.com/) - All-in-One board for our 2021/2022 internal combustion vehicle.
 
 ![alt text](./pictures/unpopulatedTop.jpg)
-![alt text](./pictures/unpopulatedBottom.jpg)
+![alt text](./pictures/lightsoninenclosure.jpg)
+![alt text](./pictures/zoomout.jpg)
 
 The AIO board encapsulates several data acquisition features, as well as rules compliant power staging and power distribution, into a single PCB. Note that it is tightly integrated with our Brake-System-Plausibility device which can be found at the repository over [here](https://vtmotorsports.weebly.com/). 
 
